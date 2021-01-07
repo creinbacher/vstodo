@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": "extension"
+	},
+	{
+		"path": "api"
+	}
+],
+  "settings": {
+    "typescript.tsc.autoDetect": "off"
+  }
+}
