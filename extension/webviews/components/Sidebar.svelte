@@ -7,6 +7,11 @@
 
     let loading = true;
     let user: User | null = null;
+    let page: "todos" | "contact" = tsvscode.getState()?.page || "todos";
+
+    $: {
+        tsvscode.setState({ page });
+    }
 
     onMount(() => {
         window.addEventListener("message", async (event) => {
@@ -33,7 +38,20 @@
 {#if loading}
     <div>loading ...</div>
 {:else if user}
-    <Todos {user} {accessToken} />
+    {#if page === 'todos'}
+        <Todos {user} {accessToken} />
+        <button
+            on:click={() => {
+                page = 'contact';
+            }}>go to contact</button>
+    {:else}
+        <div>Contact me here:</div>
+        <button
+            on:click={() => {
+                page = 'todos';
+            }}>go back</button>
+    {/if}
+
     <button
         on:click={() => {
             accessToken = '';
