@@ -4,10 +4,13 @@ import * as vscode from "vscode";
 import { authenticate } from "./authenticate";
 import { HelloWorldPanel } from "./HelloWorldPanel";
 import { SidebarProvider } from "./SidebarProvider";
+import { TokenManager } from "./TokenManager";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  TokenManager.globalState = context.globalState;
+  console.log("Token value is: ", TokenManager.getToken());
   const sidebarProvider = new SidebarProvider(context.extensionUri);
 
   const item = vscode.window.createStatusBarItem(
@@ -32,7 +35,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand("vstodo.authenticate", () => {
-      authenticate();
+      try {
+        authenticate();
+      } catch (err) {
+        console.error(err);
+      }
     })
   );
 
